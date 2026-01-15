@@ -1,0 +1,26 @@
+<div class="header mt-5">
+  <h1><%= @list.name %> - <%= @list.bookmarks.count %> movies</h1>
+</div>
+<div class="row row-cols-2 row-cols-md-5 g-4 mt-3">
+  <% @list.bookmarks.each do |bookmark| %>
+    <div class="col">
+      <div class="card h-100">
+        <% if bookmark.movie.poster_url.present? %>
+          <%= image_tag bookmark.movie.poster_url, class: "card-img-top", alt: bookmark.movie.title, style: "height: 200px; object-fit: cover;" %>
+        <% end %>
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title"><%= bookmark.movie.title %></h5>
+          <p class="card-text flex-grow-1"><%= bookmark.movie.overview.truncate(100) %></p>
+          <p class="text-muted small"><%= bookmark.comment %></p>
+          <div class="row d-flex justify-content-between align-items-center">
+          <p class="text-warning mb-0"><%= bookmark.movie.rating.round(1) %>/10</p>
+          <%= link_to "Delete bookmark", bookmark_path(bookmark), method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "btn btn-sm btn-danger" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <%= link_to "Change List Name", edit_list_path(@list)  %>
+  <%= link_to "Add bookmarks", new_list_bookmark_path(@list) %>
+  <%= link_to "Back to Lists", root_path %>
+</div>
